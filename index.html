@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Podere Pianizzoli — Agriturismo a Massa Marittima</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --crema:      #f5ede0;
+      --crema-dark: #ecdbc6;
+      --terra:      #b8622a;
+      --terra-dark: #8c4a1e;
+      --verde:      #3a4a2e;
+      --verde-light:#5a6e47;
+      --ink:        #2a2218;
+      --muted:      #7a6a56;
+      --white:      #fdfaf6;
+      --separator:  rgba(90,70,45,0.18);
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Jost', sans-serif;
+      --transition: 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body { background: var(--white); color: var(--ink); font-family: var(--font-sans); font-weight: 300; line-height: 1.7; overflow-x: hidden; }
+    img  { display: block; width: 100%; height: 100%; object-fit: cover; }
+    a    { color: inherit; text-decoration: none; }
+    ul   { list-style: none; }
+
+    /* ── NAV ── */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 0 5vw; height: 64px; background: transparent; transition: background var(--transition), box-shadow var(--transition); }
+    nav.scrolled { background: var(--white); box-shadow: 0 1px 0 var(--separator); }
+    .nav-logo { font-family: var(--font-serif); font-size: 1.25rem; font-weight: 600; letter-spacing: 0.04em; color: var(--white); transition: color var(--transition); }
+    nav.scrolled .nav-logo { color: var(--ink); }
+    .nav-links { display: flex; gap: 2.5rem; align-items: center; }
+    .nav-links a { font-size: 0.78rem; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.85); transition: color var(--transition); }
+    nav.scrolled .nav-links a { color: var(--muted); }
+    .nav-links a:hover { color: var(--terra) !important; }
+    .nav-cta { padding: 8px 22px; border: 1px solid rgba(255,255,255,0.6); border-radius: 2px; font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--white) !important; transition: all var(--transition); }
+    nav.scrolled .nav-cta { border-color: var(--terra); color: var(--terra) !important; }
+    .nav-cta:hover { background: var(--terra) !important; border-color: var(--terra) !important; color: var(--white) !important; }
+    .nav-hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; background: none; border: none; }
+    .nav-hamburger span { display: block; width: 24px; height: 1.5px; background: var(--white); transition: background var(--transition); }
+    nav.scrolled .nav-hamburger span { background: var(--ink); }
+
+    /* ── HERO ── */
+    #hero { position: relative; height: 100vh; min-height: 560px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-bg { position: absolute; inset: 0; }
+    .hero-bg img { object-position: center 30%; }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(160deg, rgba(42,34,24,0.45) 0%, rgba(42,34,24,0.72) 100%); }
+    .hero-content { position: relative; text-align: center; color: var(--white); padding: 0 24px; animation: fadeUp 1.2s ease both; }
+    .hero-eyebrow { display: inline-block; font-size: 0.72rem; font-weight: 400; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-bottom: 20px; }
+    .hero-title { font-family: var(--font-serif); font-size: clamp(3rem, 8vw, 7rem); font-weight: 300; line-height: 1.05; margin-bottom: 24px; }
+    .hero-title em { font-style: italic; color: #e8c99a; }
+    .hero-sub { font-size: 1rem; color: rgba(255,255,255,0.75); max-width: 480px; margin: 0 auto 40px; line-height: 1.8; }
+    .hero-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary { padding: 14px 36px; background: var(--terra); color: var(--white); font-family: var(--font-sans); font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; border: none; border-radius: 2px; cursor: pointer; display: inline-block; transition: background var(--transition), transform var(--transition); }
+    .btn-primary:hover { background: var(--terra-dark); transform: translateY(-2px); }
+    .btn-outline { padding: 13px 36px; background: transparent; color: var(--white); font-family: var(--font-sans); font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.5); border-radius: 2px; cursor: pointer; display: inline-block; transition: all var(--transition); }
+    .btn-outline:hover { border-color: var(--white); background: rgba(255,255,255,0.1); }
+    .hero-scroll { position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px; color: rgba(255,255,255,0.5); font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase; animation: bounce 2s ease-in-out infinite; }
+    .hero-scroll::after { content: ''; display: block; width: 1px; height: 40px; background: linear-gradient(to bottom, rgba(255,255,255,0.5), transparent); }
+
+    /* ── PILLOLE ── */
+    .pillole { background: var(--verde); display: grid; grid-template-columns: repeat(4, 1fr); }
+    .pillola { padding: 28px 24px; display: flex; align-items: center; gap: 14px; border-right: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.9); transition: background var(--transition); }
+    .pillola:last-child { border-right: none; }
+    .pillola:hover { background: var(--verde-light); }
+    .pillola-icon { font-size: 1.6rem; flex-shrink: 0; }
+    .pillola-text strong { display: block; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: #d4c4a0; margin-bottom: 2px; }
+    .pillola-text span { font-size: 0.82rem; color: rgba(255,255,255,0.65); }
+
+    /* ── SEZIONE COMUNE ── */
+    section { padding: 100px 5vw; }
+    .section-label { display: inline-block; font-size: 0.68rem; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--terra); margin-bottom: 14px; }
+    .section-title { font-family: var(--font-serif); font-size: clamp(2.2rem, 4vw, 3.6rem); font-weight: 300; line-height: 1.15; color: var(--ink); margin-bottom: 24px; }
+    .section-title em { font-style: italic; }
+    .section-body { font-size: 1rem; color: var(--muted); max-width: 54ch; line-height: 1.85; }
+    hr.ornament { border: none; width: 48px; height: 1px; background: var(--terra); margin: 24px 0; }
+
+    /* ── CHI SIAMO ── */
+    #chi-siamo { background: var(--crema); padding: 0; display: grid; grid-template-columns: 1fr 1fr; min-height: 580px; }
+    .chi-siamo-img { position: relative; overflow: hidden; min-height: 400px; }
+    .chi-siamo-text { padding: 80px 8vw 80px 6vw; display: flex; flex-direction: column; justify-content: center; }
+    .chi-siamo-firma { display: flex; align-items: center; gap: 14px; margin-top: 32px; }
+    .firma-avatar { width: 52px; height: 52px; border-radius: 50%; background: var(--verde); display: flex; align-items: center; justify-content: center; color: #d4c4a0; font-family: var(--font-serif); font-size: 1.1rem; font-weight: 600; flex-shrink: 0; }
+    .firma-info strong { display: block; font-family: var(--font-serif); font-size: 1.05rem; font-weight: 600; color: var(--ink); }
+    .firma-info span { font-size: 0.8rem; color: var(--muted); }
+
+    /* ── CUCINA ── */
+    #cucina { background: var(--white); max-width: 1200px; margin: 0 auto; }
+    .cucina-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; margin-bottom: 80px; }
+    .menu-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--crema-dark); }
+    .menu-card { background: var(--crema); position: relative; overflow: hidden; }
+    .menu-card-img { height: 220px; overflow: hidden; }
+    .menu-card-img img { transition: transform 0.6s ease; }
+    .menu-card:hover .menu-card-img img { transform: scale(1.04); }
+    .menu-card-body-wrap { padding: 28px 26px 32px; }
+    .menu-card::before { content: attr(data-num); position: absolute; top: 14px; right: 18px; font-family: var(--font-serif); font-size: 2.8rem; font-weight: 300; color: rgba(255,255,255,0.55); line-height: 1; z-index: 1; }
+    .menu-card-title { font-family: var(--font-serif); font-size: 1.3rem; font-weight: 600; color: var(--ink); margin-bottom: 10px; }
+    .menu-card-text { font-size: 0.88rem; color: var(--muted); line-height: 1.75; }
+    .menu-price { display: inline-block; margin-top: 16px; font-family: var(--font-serif); font-size: 1.1rem; font-weight: 600; color: var(--terra); }
+
+    /* ── GALLERIA ── */
+    #galleria { padding: 0; background: var(--ink); }
+    .galleria-header { padding: 80px 5vw 48px; text-align: center; color: var(--white); }
+    .galleria-header .section-label { color: #d4c4a0; }
+    .galleria-header .section-title { color: var(--white); }
+    .galleria-grid { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 260px); gap: 3px; }
+    .g-posto-1  { grid-column: 1/2; grid-row: 1; }
+    .g-posto-2  { grid-column: 2/3; grid-row: 1; }
+    .g-posto-3  { grid-column: 3/4; grid-row: 1; }
+    .g-cibo-1   { grid-column: 1/2; grid-row: 2; }
+    .g-cibo-2   { grid-column: 2/3; grid-row: 2; }
+    .g-cibo-3   { grid-column: 3/4; grid-row: 2; }
+    .g-animali-1 { grid-column: 1/2; grid-row: 3; }
+    .g-animali-2 { grid-column: 2/3; grid-row: 3; }
+    .g-animali-3 { grid-column: 3/4; grid-row: 3; }
+    .g-item { overflow: hidden; cursor: zoom-in; position: relative; }
+    .g-item img { transition: transform 0.6s ease; }
+    .g-item:hover img { transform: scale(1.05); }
+    .g-label { position: absolute; bottom: 12px; left: 14px; z-index: 2; font-size: 0.65rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.85); background: rgba(0,0,0,0.38); padding: 4px 10px; border-radius: 2px; backdrop-filter: blur(4px); }
+    .galleria-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; margin-top: 3px; }
+    .galleria-strip-item { height: 180px; overflow: hidden; cursor: zoom-in; }
+    .galleria-strip-item img { transition: transform 0.6s ease; }
+    .galleria-strip-item:hover img { transform: scale(1.05); }
+    .galleria-footer { padding: 32px 5vw 64px; text-align: center; color: rgba(255,255,255,0.35); font-size: 0.8rem; letter-spacing: 0.1em; }
+
+    /* ── RECENSIONI ── */
+    #recensioni { background: var(--crema); }
+    .rec-header { text-align: center; margin-bottom: 64px; }
+    .stars { color: var(--terra); font-size: 1.1rem; letter-spacing: 2px; margin-bottom: 20px; }
+    .rec-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--crema-dark); max-width: 1100px; margin: 0 auto; }
+    .rec-card { background: var(--crema); padding: 36px 32px; }
+    .rec-quote { font-family: var(--font-serif); font-size: 3.5rem; line-height: 0.6; color: var(--terra); opacity: 0.35; margin-bottom: 12px; }
+    .rec-text { font-family: var(--font-serif); font-size: 1.05rem; font-weight: 300; font-style: italic; color: var(--ink); line-height: 1.7; margin-bottom: 24px; }
+    .rec-author { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+    .rec-source { font-size: 0.72rem; color: var(--terra); }
+
+    /* ── INFO & MAPPA ── */
+    #info { background: var(--white); display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 0; }
+    .info-text { padding: 100px 8vw 100px 5vw; }
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 48px; }
+    .info-item strong { display: block; font-size: 0.72rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--terra); margin-bottom: 6px; }
+    .info-item p, .info-item a { font-size: 0.95rem; color: var(--muted); line-height: 1.7; }
+    .info-item a:hover { color: var(--terra); }
+    .info-map { position: relative; overflow: hidden; min-height: 480px; }
+    .info-map iframe { width: 100%; height: 100%; border: none; filter: sepia(20%) contrast(0.95); }
+
+    /* ── PRENOTA ── */
+    #prenota { background: var(--verde); padding: 80px 5vw; text-align: center; color: var(--white); }
+    #prenota .section-title { color: var(--white); max-width: 600px; margin: 0 auto 12px; }
+    #prenota p { color: rgba(255,255,255,0.65); margin-bottom: 36px; }
+    .prenota-actions { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
+    .btn-terra { padding: 14px 40px; background: var(--terra); color: var(--white); font-family: var(--font-sans); font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; border: none; border-radius: 2px; cursor: pointer; display: inline-block; transition: background var(--transition), transform var(--transition); }
+    .btn-terra:hover { background: var(--terra-dark); transform: translateY(-2px); }
+    .btn-ghost { padding: 13px 40px; background: transparent; color: rgba(255,255,255,0.8); font-family: var(--font-sans); font-size: 0.78rem; letter-spacing: 0.14em; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.35); border-radius: 2px; cursor: pointer; display: inline-block; transition: all var(--transition); }
+    .btn-ghost:hover { border-color: rgba(255,255,255,0.8); color: var(--white); }
+
+    /* ── FOOTER ── */
+    footer { background: var(--ink); padding: 64px 5vw 32px; color: rgba(255,255,255,0.5); }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 60px; padding-bottom: 48px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .footer-brand p { font-size: 0.88rem; line-height: 1.8; max-width: 30ch; }
+    .footer-col h4 { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 20px; }
+    .footer-col ul li { margin-bottom: 10px; }
+    .footer-col ul li a { font-size: 0.9rem; color: rgba(255,255,255,0.55); transition: color var(--transition); }
+    .footer-col ul li a:hover { color: var(--terra); }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 28px; font-size: 0.78rem; flex-wrap: wrap; gap: 12px; }
+    .footer-social { display: flex; gap: 20px; }
+    .footer-social a { font-size: 0.78rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4); transition: color var(--transition); }
+    .footer-social a:hover { color: var(--terra); }
+
+    /* ── MOBILE MENU ── */
+    .mobile-menu { display: none; position: fixed; inset: 0; z-index: 200; background: var(--ink); flex-direction: column; align-items: center; justify-content: center; gap: 32px; }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a { font-family: var(--font-serif); font-size: 2.2rem; font-weight: 300; color: rgba(255,255,255,0.8); transition: color var(--transition); }
+    .mobile-menu a:hover { color: var(--terra); }
+    .mobile-close { position: absolute; top: 20px; right: 24px; background: none; border: none; color: rgba(255,255,255,0.5); font-size: 1.8rem; cursor: pointer; }
+
+    /* ── LIGHTBOX ── */
+    .lightbox { display: none; position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,0.92); align-items: center; justify-content: center; padding: 20px; }
+    .lightbox.open { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 88vh; object-fit: contain; border-radius: 2px; width: auto; height: auto; }
+    .lightbox-close { position: absolute; top: 20px; right: 28px; color: rgba(255,255,255,0.6); font-size: 2rem; cursor: pointer; background: none; border: none; }
+    .lightbox-close:hover { color: var(--white); }
+
+    /* ── ANIMAZIONI ── */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(6px); } }
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.8s ease, transform 0.8s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+      .pillole { grid-template-columns: repeat(2, 1fr); }
+      .pillola:nth-child(2) { border-right: none; }
+      .pillola:nth-child(3) { border-top: 1px solid rgba(255,255,255,0.1); }
+      #chi-siamo { grid-template-columns: 1fr; }
+      .chi-siamo-img { min-height: 280px; }
+      .chi-siamo-text { padding: 56px 6vw; }
+      .cucina-intro { grid-template-columns: 1fr; gap: 40px; }
+      .menu-cards { grid-template-columns: 1fr; }
+      .galleria-grid { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(5, 200px); }
+      .g-posto-1   { grid-column: 1/2; grid-row: 1; }
+      .g-posto-2   { grid-column: 2/3; grid-row: 1; }
+      .g-posto-3   { grid-column: 1/3; grid-row: 2; }
+      .g-cibo-1    { grid-column: 1/2; grid-row: 3; }
+      .g-cibo-2    { grid-column: 2/3; grid-row: 3; }
+      .g-cibo-3    { grid-column: 1/3; grid-row: 4; }
+      .g-animali-1 { grid-column: 1/2; grid-row: 5; }
+      .g-animali-2 { grid-column: 2/3; grid-row: 5; }
+      .g-animali-3 { display: none; }
+      .galleria-strip { grid-template-columns: 1fr 1fr; }
+      .galleria-strip-item:last-child { display: none; }
+      .rec-grid { grid-template-columns: 1fr; }
+      #info { grid-template-columns: 1fr; }
+      .info-map { min-height: 320px; }
+      .footer-grid { grid-template-columns: 1fr; gap: 40px; }
+    }
+    @media (max-width: 560px) {
+      .pillole { grid-template-columns: 1fr; }
+      .pillola { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.1); }
+      .info-grid { grid-template-columns: 1fr; gap: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="main-nav">
+    <a href="#" class="nav-logo">Podere Pianizzoli</a>
+    <ul class="nav-links">
+      <li><a href="#chi-siamo">Chi siamo</a></li>
+      <li><a href="#cucina">Cucina</a></li>
+      <li><a href="#galleria">Galleria</a></li>
+      <li><a href="#info">Come raggiungerci</a></li>
+      <li><a href="tel:+390566902461" class="nav-cta">Prenota</a></li>
+    </ul>
+    <button class="nav-hamburger" onclick="document.querySelector('.mobile-menu').classList.add('open')" aria-label="Apri menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="mobile-menu">
+    <button class="mobile-close" onclick="this.parentElement.classList.remove('open')">&times;</button>
+    <a href="#chi-siamo" onclick="this.closest('.mobile-menu').classList.remove('open')">Chi siamo</a>
+    <a href="#cucina"    onclick="this.closest('.mobile-menu').classList.remove('open')">Cucina</a>
+    <a href="#galleria"  onclick="this.closest('.mobile-menu').classList.remove('open')">Galleria</a>
+    <a href="#info"      onclick="this.closest('.mobile-menu').classList.remove('open')">Come raggiungerci</a>
+    <a href="tel:+390566902461" style="color:var(--terra); font-size:1.4rem;">0566 902461</a>
+  </div>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox" onclick="this.classList.remove('open')">
+    <button class="lightbox-close">&times;</button>
+    <img id="lightbox-img" src="" alt="Foto ingrandita" />
+  </div>
+
+  <!-- ════ HERO — posto_1.png ════ -->
+  <section id="hero">
+    <div class="hero-bg">
+      <img src="foto pianizzoli/immagini:posto_1.jpg"/>
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="hero-eyebrow">Massa Marittima · Maremma Toscana</span>
+      <h1 class="hero-title">Podere<br><em>Pianizzoli</em></h1>
+      <p class="hero-sub">Un agriturismo a conduzione familiare immerso nei boschi della Maremma. Cucina genuina, km 0, prodotti dell'azienda.</p>
+      <div class="hero-actions">
+        <a href="tel:+390566902461" class="btn-primary">Prenota il tuo tavolo</a>
+        <a href="#chi-siamo" class="btn-outline">Scopri di più</a>
+      </div>
+    </div>
+    <div class="hero-scroll">Scorri</div>
+  </section>
+
+  <!-- PILLOLE -->
+  <div class="pillole">
+    <div class="pillola"><div class="pillola-icon">🌿</div><div class="pillola-text"><strong>Km 0</strong><span>Tutto prodotto in azienda</span></div></div>
+    <div class="pillola"><div class="pillola-icon">🍽️</div><div class="pillola-text"><strong>Menu fisso</strong><span>30 € — antipasto, primo, secondo, dolce</span></div></div>
+    <div class="pillola"><div class="pillola-icon">🐾</div><div class="pillola-text"><strong>Fattoria viva</strong><span>Cavalli, asini, mucche, oche e tanti amici</span></div></div>
+    <div class="pillola"><div class="pillola-icon">📞</div><div class="pillola-text"><strong>Solo su prenotazione</strong><span>0566 902461</span></div></div>
+  </div>
+
+  <!-- ════ CHI SIAMO — posto_4.png ════ -->
+  <section id="chi-siamo">
+    <div class="chi-siamo-img">
+      <img src="FOTO PIANIZZOLI/immagini:posto_8.jpg" alt="La facciata principale di Podere Pianizzoli" />
+    </div>
+    <div class="chi-siamo-text reveal">
+      <span class="section-label">La nostra storia</span>
+      <h2 class="section-title">Un piccolo paradiso<br>nei boschi <em>maremmani</em></h2>
+      <hr class="ornament" />
+      <p class="section-body">Podere Pianizzoli è un agriturismo a conduzione familiare immerso nella macchia di Massa Marittima. Clara e Silvia vi accolgono con la stessa cura e il sorriso di chi cucina per la propria famiglia.</p>
+      <p class="section-body" style="margin-top:16px;">Tra cavalli, asini, mucche e oche libere nel giardino, troverete un luogo dove il tempo rallenta — e il cibo racconta il territorio con onestà e sapore.</p>
+      <div class="chi-siamo-firma">
+        <div class="firma-avatar">C&amp;S</div>
+        <div class="firma-info"><strong>Clara &amp; Silvia</strong><span>Le padrone di casa</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════ CUCINA ════
+       cibo_6 antipasto · cibo_2 tortelli · cibo_3 dolci -->
+  <section id="cucina" style="padding-top:100px; padding-bottom:0;">
+    <div class="cucina-intro reveal">
+      <div>
+        <span class="section-label">La cucina</span>
+        <h2 class="section-title">Arte culinaria fra<br><em>tradizione e genuinità</em></h2>
+        <hr class="ornament" />
+      </div>
+      <div>
+        <p class="section-body">La mattina si raccoglie nell'orto, il pomeriggio si cucina. Il menu segue il ritmo delle stagioni: frutta, verdura, olio, carni e conserve fatte in casa, tutto a km 0.</p>
+        <p class="section-body" style="margin-top:16px;">Un unico menù fisso, servito con gusto e abbondanza — come il pranzo della domenica della nonna.</p>
+      </div>
+    </div>
+    <div class="menu-cards reveal">
+      <div class="menu-card" data-num="01">
+        <div class="menu-card-img">
+          <img src="FOTO PIANIZZOLI/immagini:cibo_1.jpg" alt="Crostini misti dell'antipasto di Pianizzoli" />
+        </div>
+        <div class="menu-card-body-wrap">
+          <div class="menu-card-title">Antipasti misti</div>
+          <p class="menu-card-text">Salumi e formaggi dell'azienda, crostini con fegatini e paté, giardiniera e donzelle fritte. Ricco e abbondante come da tradizione.</p>
+        </div>
+      </div>
+      <div class="menu-card" data-num="02">
+        <div class="menu-card-img">
+          <img src="FOTO PIANIZZOLI/immagini:cibo_2.jpg" alt="Tortelli maremmani burro e salvia" />
+        </div>
+        <div class="menu-card-body-wrap">
+          <div class="menu-card-title">Tortelli e pasta fresca</div>
+          <p class="menu-card-text">I tortelli maremmani: sfoglia tirata a mano, ripieno di ricotta e spinaci, burro e salvia o ragù di carne. Tra i più buoni della zona.</p>
+          <span class="menu-price">Menu completo</span>
+        </div>
+      </div>
+      <div class="menu-card" data-num="03">
+        <div class="menu-card-img">
+          <img src="FOTO PIANIZZOLI/immagini:cibo_4.jpg" alt="Dolci fatti in casa a Pianizzoli" />
+        </div>
+        <div class="menu-card-body-wrap">
+          <div class="menu-card-title">Secondi e dolci</div>
+          <p class="menu-card-text">Arrosti e secondi di carne, seguiti da dolci fatti in casa: rotolo, crostate, muffin e ciambelle stagionali.</p>
+          <span class="menu-price">€ 30 / persona</span>
+        </div>
+      </div>
+    </div>
+    <div style="padding:32px 0; text-align:center; background:var(--crema); color:var(--muted); font-size:0.85rem; letter-spacing:0.08em;">
+      Il ristorante riceve <strong style="color:var(--ink);">solo su prenotazione</strong> — chiamare sempre prima di venire.
+    </div>
+  </section>
+
+  <!-- ════ GALLERIA ════
+       Riga 1 POSTO    → posto_2 · posto_3 · posto_5
+       Riga 2 CIBO     → cibo_1  · cibo_4  · cibo_5
+       Riga 3 ANIMALI  → animali_2 · animali_3 · animali_7
+       Strip ANIMALI   → animali_1 · animali_4 · animali_6  -->
+  <section id="galleria">
+    <div class="galleria-header reveal">
+      <span class="section-label">Galleria</span>
+      <h2 class="section-title">Il podere, la tavola, <em>gli animali</em></h2>
+    </div>
+
+    <div class="galleria-grid">
+      <!-- RIGA 1 — POSTO -->
+      <div class="g-item g-posto-1" onclick="openLightbox('immagini/posto_2.png')">
+        <img src="FOTO PIANIZZOLI/immagini:posto_2.jpg" alt="casale" />
+        <span class="g-label">Posto</span>
+      </div>
+      <div class="g-item g-posto-2" onclick="openLightbox('immagini/posto_3.png')">
+        <img src="FOTO PIANIZZOLI/immagini:posto_4.jpg" alt="zucca" />
+        <span class="g-label">Posto</span>
+      </div>
+      <div class="g-item g-posto-3" onclick="openLightbox('immagini/posto_5.png')">
+        <img src="FOTO PIANIZZOLI/immagini:posto_7.jpg" alt="terra" />
+        <span class="g-label">Posto</span>
+      </div>
+
+      <!-- RIGA 2 — CIBO -->
+      <div class="g-item g-cibo-1" onclick="openLightbox('immagini/cibo_1.png')">
+        <img src="FOTO PIANIZZOLI/immagini:cibo_5.jpg" alt="Tagliere di salumi e formaggi con fiori eduli" />
+        <span class="g-label">Cibo</span>
+      </div>
+      <div class="g-item g-cibo-2" onclick="openLightbox('immagini/cibo_4.png')">
+        <img src="FOTO PIANIZZOLI/immagini:cibo_10.jpg" alt="Tortelli maremmani al ragù di carne" />
+        <span class="g-label">Cibo</span>
+      </div>
+      <div class="g-item g-cibo-3" onclick="openLightbox('immagini/cibo_5.png')">
+        <img src="FOTO PIANIZZOLI/immagini:cibo_6.jpg" alt="Tagliere di salumi e pecorino dell'azienda" />
+        <span class="g-label">Cibo</span>
+      </div>
+
+      <!-- RIGA 3 — ANIMALI -->
+      <div class="g-item g-animali-1" onclick="openLightbox('immagini/animali_2.png')">
+        <img src="FOTO PIANIZZOLI/immagini:animali_1.jpg" alt="Stormo di oche nel vialetto del podere" />
+        <span class="g-label">Animali</span>
+      </div>
+      <div class="g-item g-animali-2" onclick="openLightbox('immagini/animali_3.png')">
+        <img src="FOTO PIANIZZOLI/immagini:animali_2.jpg" alt="Cavallo sauro al pascolo tra i boschi maremmani" />
+        <span class="g-label">Animali</span>
+      </div>
+      <div class="g-item g-animali-3" onclick="openLightbox('immagini/animali_7.png')">
+        <img src="FOTO PIANIZZOLI/immagini:posto_3.jpg" alt="Due asini al fieno nel recinto" />
+        <span class="g-label">Animali</span>
+      </div>
+    </div>
+
+    <!-- STRIP extra animali -->
+    <div class="galleria-strip">
+      <div class="galleria-strip-item" onclick="openLightbox('immagini/animali_1.png')">
+        <img src="FOTO PIANIZZOLI/immagini:posto_9.jpg" alt="Cavallo baio che guarda in camera" />
+      </div>
+      <div class="galleria-strip-item" onclick="openLightbox('immagini/animali_4.png')">
+        <img src="FOTO PIANIZZOLI/immagini:animali_4.jpg" alt="Mucca bianca chianina in stalla" />
+      </div>
+      <div class="galleria-strip-item" onclick="openLightbox('immagini/animali_6.png')">
+        <img src="FOTO PIANIZZOLI/immagini:cibo_8.jpg" alt="Mucche libere nel bosco di Pianizzoli" />
+      </div>
+    </div>
+
+    <div class="galleria-footer">
+      Segui il podere su
+      <a href="https://www.instagram.com/agriturismopianizzoli/" target="_blank" rel="noopener"
+         style="color:rgba(255,255,255,0.6); text-decoration:underline; text-underline-offset:3px;">
+        @agriturismopianizzoli
+      </a>
+      per nuove foto ogni settimana
+    </div>
+  </section>
+
+  <!-- RECENSIONI -->
+  <section id="recensioni">
+    <div class="rec-header reveal">
+      <span class="section-label">Cosa dicono di noi</span>
+      <h2 class="section-title">Le <em>parole</em> dei nostri ospiti</h2>
+      <div class="stars">★★★★★</div>
+    </div>
+    <div class="rec-grid">
+      <div class="rec-card reveal">
+        <div class="rec-quote">"</div>
+        <p class="rec-text">Potessi darei 6 stelle. Per la semplicità e la bontà dei piatti, cucinati con passione dalla padrona di casa. Per l'atmosfera genuina che si sente ad ogni boccone.</p>
+        <div class="rec-author">Ospite — Giugno 2023</div>
+        <div class="rec-source">Tripadvisor</div>
+      </div>
+      <div class="rec-card reveal">
+        <div class="rec-quote">"</div>
+        <p class="rec-text">I tortelli sono paradisiaci. Era tanto che non li mangiavo così buoni. Porzioni abbondanti e tutto a km 0. Lo si sente davvero in ogni piatto.</p>
+        <div class="rec-author">Gruppo di amici — Cena</div>
+        <div class="rec-source">Tripadvisor</div>
+      </div>
+      <div class="rec-card reveal">
+        <div class="rec-quote">"</div>
+        <p class="rec-text">Siamo stati coccolati da Clara e Silvia. Abbiamo mangiato cose tutte fatte da loro, genuine e buonissime. Un piccolo paradiso per chi sa apprezzare la semplicità.</p>
+        <div class="rec-author">Coppia — Soggiorno estivo</div>
+        <div class="rec-source">Tripadvisor</div>
+      </div>
+    </div>
+    <div style="text-align:center; margin-top:48px;">
+      <a href="https://www.tripadvisor.it/Restaurant_Review-g616197-d4745820-Reviews-Pianizzoli-Massa_Marittima_Province_of_Grosseto_Tuscany.html"
+         target="_blank" rel="noopener" class="btn-primary">Leggi tutte le recensioni</a>
+    </div>
+  </section>
+
+  <!-- ════ INFO & MAPPA — con Instagram ════ -->
+  <section id="info">
+    <div class="info-text reveal">
+      <span class="section-label">Dove siamo</span>
+      <h2 class="section-title">Come<br><em>raggiungerci</em></h2>
+      <hr class="ornament" />
+      <div class="info-grid">
+        <div class="info-item">
+          <strong>Indirizzo</strong>
+          <p>Loc. Pianizzoli<br>Strada Provinciale Perolla<br>58024 Massa Marittima (GR)</p>
+        </div>
+        <div class="info-item">
+          <strong>Telefono</strong>
+          <p><a href="tel:+390566902461">0566 902461</a></p>
+        </div>
+        <div class="info-item">
+          <strong>Orari ristorante</strong>
+          <p>Tutti i giorni 09:00 – 22:30<br><em>Solo su prenotazione</em></p>
+        </div>
+        <div class="info-item">
+          <strong>Indicazioni stradali</strong>
+          <p><a href="https://www.google.com/maps/place/Agriturismo+Pianizzoli/@43.0408524,10.9527799,15z" target="_blank" rel="noopener">Apri su Google Maps →</a></p>
+        </div>
+        <!-- ════ INSTAGRAM — aggiunto qui ════ -->
+        <div class="info-item">
+          <strong>Instagram</strong>
+          <p><a href="https://www.instagram.com/agriturismopianizzoli/" target="_blank" rel="noopener">@agriturismopianizzoli →</a></p>
+        </div>
+        <div class="info-item">
+          <strong>Facebook</strong>
+          <p><a href="https://www.facebook.com/poderepianizzoli/" target="_blank" rel="noopener">Podere Pianizzoli →</a></p>
+        </div>
+      </div>
+    </div>
+    <div class="info-map">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2880.1!2d10.9527799!3d43.0408524!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1329ec995c30122f%3A0x519de006f4b55f2d!2sAgriturismo%20Pianizzoli!5e0!3m2!1sit!2sit!4v1713269862000!5m2!1sit!2sit"
+        loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+        title="Mappa Agriturismo Pianizzoli" allowfullscreen>
+      </iframe>
+    </div>
+  </section>
+
+  <!-- PRENOTA STRIP -->
+  <section id="prenota">
+    <span class="section-label" style="color:#d4c4a0;">Prenota</span>
+    <h2 class="section-title">Vieni a tavola con noi.<br><em>Ti aspettiamo.</em></h2>
+    <p>Ricordiamo che il ristorante è aperto solo su prenotazione. Chiamaci prima di venire.</p>
+    <div class="prenota-actions">
+      <a href="tel:+390566902461" class="btn-terra">Chiama: 0566 902461</a>
+      <a href="https://www.instagram.com/agriturismopianizzoli/" target="_blank" rel="noopener" class="btn-ghost">Instagram</a>
+      <a href="https://www.facebook.com/poderepianizzoli/" target="_blank" rel="noopener" class="btn-ghost">Facebook</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span style="font-family:var(--font-serif); font-size:1.25rem; font-weight:600; display:block; margin-bottom:16px; color:var(--white);">Podere Pianizzoli</span>
+        <p>Agriturismo a conduzione familiare nella Maremma Toscana. Cucina genuina, prodotti dell'azienda, atmosfera autentica.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigazione</h4>
+        <ul>
+          <li><a href="#chi-siamo">Chi siamo</a></li>
+          <li><a href="#cucina">Cucina &amp; menu</a></li>
+          <li><a href="#galleria">Galleria</a></li>
+          <li><a href="#recensioni">Recensioni</a></li>
+          <li><a href="#info">Come raggiungerci</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contatti &amp; Social</h4>
+        <ul>
+          <li><a href="tel:+390566902461">0566 902461</a></li>
+          <li><a href="https://www.instagram.com/agriturismopianizzoli/" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://www.facebook.com/poderepianizzoli/" target="_blank" rel="noopener">Facebook</a></li>
+          <li><a href="https://www.google.com/maps/place/Agriturismo+Pianizzoli/@43.0408524,10.9527799,15z" target="_blank" rel="noopener">Google Maps</a></li>
+          <li><a href="https://www.tripadvisor.it/Restaurant_Review-g616197-d4745820-Reviews-Pianizzoli" target="_blank" rel="noopener">Tripadvisor</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Podere Pianizzoli — Massa Marittima (GR)</span>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/agriturismopianizzoli/" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.facebook.com/poderepianizzoli/" target="_blank" rel="noopener">Facebook</a>
+        <a href="https://www.tripadvisor.it/Restaurant_Review-g616197-d4745820-Reviews-Pianizzoli" target="_blank" rel="noopener">Tripadvisor</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Nav scroll
+    const nav = document.getElementById('main-nav');
+    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 60));
+
+    // Reveal on scroll
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          e.target.style.transitionDelay = (i % 3) * 0.1 + 's';
+          e.target.classList.add('visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    // Lightbox
+    function openLightbox(src) {
+      document.getElementById('lightbox-img').src = src;
+      document.getElementById('lightbox').classList.add('open');
+    }
+    document.querySelector('.lightbox-close').addEventListener('click', e => {
+      e.stopPropagation();
+      document.getElementById('lightbox').classList.remove('open');
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') document.getElementById('lightbox').classList.remove('open');
+    });
+  </script>
+</body>
+</html>
